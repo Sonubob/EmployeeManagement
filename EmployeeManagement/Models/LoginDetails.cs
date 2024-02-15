@@ -1,8 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
-    public class Employee
+    public class LoginDetails
     {
         public int Id { get; set; }
         [Required]
@@ -16,11 +20,6 @@ namespace EmployeeManagement.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-        [Required(ErrorMessage = "This field is required.")]
-        [Compare(nameof(Password), ErrorMessage = "Passwords don't match.")]
-        public string ConfirmPassword { get; set; }
-        [Required]
-        public Dept? Department { get; set; }
-
+       
     }
 }

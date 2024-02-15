@@ -1,0 +1,13 @@
+﻿@model bool
+
+<div class="login-panel">
+    @if (Model)
+    {
+    <p>Welcome!</p>
+    <a id="logout" class="nav-link text-light">Logout</a>
+    }
+    else
+    {
+    <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+    }
+</div>

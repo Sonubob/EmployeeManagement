@@ -1,3 +1,5 @@
+using EmployeeManagement.Models;
+using EmployeeManagement.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,8 +21,9 @@ namespace EmployeeManagement
                 
         public void ConfigureServices(IServiceCollection services)
         {                  
-            services.AddMvc().AddXmlDataContractSerializerFormatters();                     
-
+            services.AddMvc().AddXmlDataContractSerializerFormatters();
+            services.AddScoped(typeof(IMockEmployeeRepository), typeof(MockEmployeeRepository));
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +42,7 @@ namespace EmployeeManagement
             
             app.UseRouting();
 
-
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {               

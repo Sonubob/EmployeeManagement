@@ -13,8 +13,8 @@
 
 
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
-            <a asp-controller="Home" asp-action="Edit" class="btn btn-primary">Edit</a>
-            <a asp-controller="Home" asp-action="Delete" class="btn btn-primary">Delete</a>
+            <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-controller="Home" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary">Delete</a>
         </div>
     </div>
 

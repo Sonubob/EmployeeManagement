@@ -1,23 +1,30 @@
 ﻿using EmployeeManagement.Models;
+using EmployeeManagement.Repositories;
 using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace EmployeeManagement.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly MockEmployeeRepository _empRepo;
+        private readonly IMockEmployeeRepository _empRepo;
+        private byte[] byteValue;
 
-        public HomeController()
+        public HomeController(IMockEmployeeRepository empRepo)
         {
-            _empRepo = new MockEmployeeRepository();
+            _empRepo = empRepo;
         }
 
-        public ViewResult Index()
+        public IActionResult Index()
         {
             var model = _empRepo.GetAllEmployee();
-            
-            return View(model);
+           HttpContext.Session.TryGetValue("IsAuthenticated", out byteValue);
+            var isUserAuthenticated = BitConverter.ToBoolean(byteValue ?? new byte[1]);
+            if (isUserAuthenticated)
+                return View(model);
+            else
+                return RedirectToAction("LogIn", "Account");
         }
 
         public ViewResult Details(int Id)
@@ -46,7 +53,15 @@ namespace EmployeeManagement.Controllers
             else
             {
                 //get employee details
-                var _empModel = _empRepo.GetEmployee(1);
+                var _empModel = _empRepo.GetEmployee(Id??0);
+                var _empVM = new EmployeeViewModel()
+                {
+                    Id = _empModel.Id,
+                    Name = _empModel.Name,
+                    Email = _empModel.Email,
+                    Department = _empModel.Department
+                };
+                ViewBag.EmployeeModel = _empVM;
                 return View(_empModel);
             }
         }
@@ -54,23 +69,28 @@ namespace EmployeeManagement.Controllers
         [HttpPost]
         public IActionResult Edit(Employee employeeModel)
         {
-            if (employeeModel.Id > 0 )
+            var result = new Employee();
+            if (ModelState.IsValid && employeeModel.Id > 0 )
             {
                 //update employee
-                return View();
+                 result = _empRepo.Update(employeeModel);
             }
             else
             {
                 //add employee
-                return View();
-            }           
-
-            //save changes
-
+                result = _empRepo.Add(employeeModel);
+              
+            }
             //if changes saved return to index
-
+            if(result.Id > 0)
+            {
+                return RedirectToAction("Index");
+            }
             //if changes failed return employ edit view
-
+            else
+            {
+                return View(result);
+            }
         }
 
         public IActionResult Remove(int Id)
