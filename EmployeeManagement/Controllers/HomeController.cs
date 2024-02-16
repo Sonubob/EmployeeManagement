@@ -59,7 +59,9 @@ namespace EmployeeManagement.Controllers
                     Id = _empModel.Id,
                     Name = _empModel.Name,
                     Email = _empModel.Email,
-                    Department = _empModel.Department
+                    Department = _empModel.Department,
+                    Password = _empModel.Password,
+                    ConfirmPassword = _empModel.ConfirmPassword
                 };
                 ViewBag.EmployeeModel = _empVM;
                 return View(_empModel);
@@ -70,7 +72,24 @@ namespace EmployeeManagement.Controllers
         public IActionResult Edit(Employee employeeModel)
         {
             var result = new Employee();
-            if (ModelState.IsValid && employeeModel.Id > 0 )
+            if (!ModelState.IsValid)
+            {
+                // Display an error message for invalid credentials
+                ModelState.AddModelError(string.Empty, "Please fill in the required fields");
+                var _empModel = _empRepo.GetEmployee(employeeModel.Id);
+                var _empVM = new EmployeeViewModel()
+                {
+                    Id = _empModel.Id,
+                    Name = _empModel.Name,
+                    Email = _empModel.Email,
+                    Department = _empModel.Department,
+                    Password = _empModel.Password,
+                    ConfirmPassword = _empModel.ConfirmPassword
+                };
+                ViewBag.EmployeeModel = _empVM;
+                return View(employeeModel);
+            }
+            if (employeeModel.Id > 0 )
             {
                 //update employee
                  result = _empRepo.Update(employeeModel);
@@ -93,14 +112,14 @@ namespace EmployeeManagement.Controllers
             }
         }
 
-        public IActionResult Remove(int Id)
+        public IActionResult Delete(int Id)
         {
             //Remove Record
-
+            var result = _empRepo.Remove(Id);
             //Save changes
-
+            if (result != null) return RedirectToAction("Index");
             //Redirect to index
-            return RedirectToAction("Index");
+            else return View("Error");
         }
 
         

@@ -70,7 +70,9 @@ namespace EmployeeManagement.Models
                 _empList.Remove(emp);
                 emp.Name = employeeUpdate.Name;
                 emp.Email = employeeUpdate.Email;
-                emp.Department = employeeUpdate.Department;          
+                emp.Department = employeeUpdate.Department;
+                emp.Password = employeeUpdate.Password;
+                emp.ConfirmPassword = employeeUpdate.ConfirmPassword;
             }
             _empList.Add(emp);
             UpdateEmployeeListToFile(_empList);
