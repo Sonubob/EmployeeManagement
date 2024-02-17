@@ -1,0 +1,44 @@
+﻿@model EmployeeManagement.Models.ContactDetails
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>FileDetails</h4>
+    <hr />
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+    <div class="form-horizontal">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Subject)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.TextAreaFor(model => model.Subject)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.TextAreaFor(model => model.Message)
+            </dd>
+        </dl>
+        <div class="btn-group">
+            <input type="submit" value="Send as Json" asp-action="DetailsAsJson" class="btn btn-danger" />
+            <span>&nbsp;&nbsp; </span>
+            <input type="submit" value="Send as XML" asp-action="DetailsAsXML"  class="btn btn-danger" />
+           
+        </div>
+    </div>
+    }
+
+
+</div>
+    <br />
+    <div>
+        <a asp-action="Index" asp-controller="Home">Back to List</a>
+    </div>

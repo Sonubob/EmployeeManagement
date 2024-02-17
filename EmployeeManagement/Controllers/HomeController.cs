@@ -6,6 +6,9 @@ using System;
 
 namespace EmployeeManagement.Controllers
 {
+    /// <summary>
+    /// User details summary with Edit View and Delete functionalities
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly IMockEmployeeRepository _empRepo;

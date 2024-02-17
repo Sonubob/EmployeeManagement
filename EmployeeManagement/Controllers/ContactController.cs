@@ -10,51 +10,56 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
-    public class FileController : Controller
+    /// <summary>
+    /// Objective: To create action methods that return data as XML and Json
+    /// </summary>
+    public class ContactController : Controller
     {
-        private readonly IMockEmployeeRepository _dataRepo;
-        public FileController(IMockEmployeeRepository dataRepo)
+        public ContactController()
         {
-            _dataRepo = dataRepo;
+       
         }
 
-        // GET: FileController
+        // GET: ContactController
         public ActionResult Index()
         {
-            return View();
+            return View(new ContactDetails());
         }
-
+      
       /// <summary>
       /// Get Details as XML Soap Packet
       /// </summary>
-      /// <param name="id"></param>
+      /// <param name="details"></param>
       /// <returns></returns>
-        [HttpGet]
-        public ActionResult DetailsAsXML()
+        [HttpPost]
+        public IActionResult DetailsAsXML(ContactDetails details)
         {
             //Get the user data from json file
-            var data = JsonConvert.SerializeObject( _dataRepo.GetAllEmployee().ToList());
-            var model = new FileDetails();
-            model.Message = ConvertJsonToSoap(data);
+            var data = JsonConvert.SerializeObject(details);
             
-            return View("Index",model);
+            var result = ConvertJsonToSoap(data);
+
+            return Content(result, "text/xml");
         }
 
-        [HttpGet]
-        public ActionResult DetailsAsJson()
+        /// <summary>
+        /// Send the response as an XML file
+        /// </summary>
+        /// <param name="contactDetails"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult DetailsAsJson(ContactDetails contactDetails)
         {
-            //Get the user data from json file
-            var data = JsonConvert.SerializeObject(_dataRepo.GetAllEmployee().ToList());
-            var model = new FileDetails();
-            model.Message =data;
 
-            return View("Index",model);
+            var detailsJson = JsonConvert.SerializeObject(contactDetails); 
+
+            return Json(detailsJson);
         }
 
-        private string ConvertJsonToSoap(object jsonData)
+        private string ConvertJsonToSoap(string jsonData)
         {
             // Convert JSON to XML
-            string xml = JsonConvert.DeserializeXmlNode(JsonConvert.SerializeObject(jsonData), "Data").OuterXml;
+            string xml = JsonConvert.DeserializeXmlNode(jsonData,"root").OuterXml;
 
             // Construct SOAP envelope
             string soapXml = $@"<?xml version=""1.0"" encoding=""utf-8""?>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers.ViewComponents
 {
+    /// <summary>
+    /// Objective: Add view component to display the login status of the user throughout the website
+    /// </summary>
     public class LoginPanelViewComponent : ViewComponent
     {
         private byte[] byteValue;

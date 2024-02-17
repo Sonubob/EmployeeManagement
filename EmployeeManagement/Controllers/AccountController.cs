@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
+    /// <summary>
+    /// Objective: Model binding in MVC
+    /// </summary>
     public class AccountController : Controller
     {
         private readonly IMockEmployeeRepository _repo;
@@ -21,6 +24,11 @@ namespace EmployeeManagement.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// To validate the user using model binding and take them to landing page
+        /// </summary>
+        /// <param name="loginDetails"></param>
+        /// <returns></returns>
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Login(LoginDetails loginDetails)
@@ -44,6 +52,10 @@ namespace EmployeeManagement.Controllers
             }
         }
 
+        /// <summary>
+        /// User registration method
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Create()
         {
@@ -55,6 +67,11 @@ namespace EmployeeManagement.Controllers
             return _repo.GetEmployeeByNameAndPassword(email, password);
         }
 
+        /// <summary>
+        /// Create new user from the form details
+        /// </summary>
+        /// <param name="newUserDetails"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create(Employee newUserDetails)
         {
