@@ -22,6 +22,7 @@ namespace EmployeeManagement.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            HttpContext.Session.Remove("IsAuthenticated");
             return View();
         }
         /// <summary>

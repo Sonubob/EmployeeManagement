@@ -12,7 +12,7 @@ namespace EmployeeManagement.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "This field is required.")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [RegularExpression(@"^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)).+$")]
+        [RegularExpression(@"^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)).+$",ErrorMessage ="The password should have atleast one upper case, one lower case and one number")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
